@@ -5,6 +5,11 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+// Static file
+app.use(express.static(path.join(__dirname, 'public')))
+console.log(__dirname)
+
+// Handlebars
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'resources/views'));
