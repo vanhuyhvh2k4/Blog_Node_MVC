@@ -5,6 +5,12 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
+// midleware
+app.use(express.urlencoded({
+  extended: true
+}));
+app.use(express.json());
+
 // Static file
 app.use(express.static(path.join(__dirname, 'public')))
 console.log(__dirname)
@@ -32,6 +38,11 @@ app.get('/news', (req, res) => {
 // SEARCH
 app.get('/search', (req, res) => {  
   res.render('search');
+});
+
+// POST
+app.post('/search', (req, res) => {  
+  res.send('');
 });
 
 app.listen(port, () => {
