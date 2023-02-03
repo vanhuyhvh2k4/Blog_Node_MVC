@@ -9,22 +9,31 @@ const port = 3000;
 app.use(express.static(path.join(__dirname, 'public')))
 console.log(__dirname)
 
-// Handlebars
+// write frontend
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'resources/views'));
 
-app.use(morgan('combined'))
+// logger
+app.use(morgan('combined'));
 
 // render
+
+// HOME
 app.get('/', (req, res) => {  
   res.render('home');
-})
+});
 
+// NEWS
 app.get('/news', (req, res) => {  
   res.render('news');
-})
+});
+
+// SEARCH
+app.get('/search', (req, res) => {  
+  res.render('search');
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
-})
+});
