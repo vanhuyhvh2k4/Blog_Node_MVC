@@ -25,7 +25,7 @@ console.log(__dirname)
 // write frontend
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
-app.set('views', path.join(__dirname, 'resources/views'));
+app.set('views', path.join(__dirname, 'resources', 'views'));
 
 // logger
 // app.use(morgan('combined'));
@@ -34,5 +34,5 @@ app.set('views', path.join(__dirname, 'resources/views'));
 route(app);
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`App listening on port ${port}`)
 });
