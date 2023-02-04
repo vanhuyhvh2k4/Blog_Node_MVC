@@ -5,6 +5,8 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
+const route = require('./routes/index.js')
+
 // midleware
 app.use(express.urlencoded({
   extended: true
@@ -21,29 +23,10 @@ app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'resources/views'));
 
 // logger
-app.use(morgan('combined'));
+// app.use(morgan('combined'));
 
-// render
-
-// HOME
-app.get('/', (req, res) => {  
-  res.render('home');
-});
-
-// NEWS
-app.get('/news', (req, res) => {  
-  res.render('news');
-});
-
-// SEARCH
-app.get('/search', (req, res) => {  
-  res.render('search');
-});
-
-// POST
-app.post('/search', (req, res) => {  
-  res.send('');
-});
+// routes init
+route(app);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
