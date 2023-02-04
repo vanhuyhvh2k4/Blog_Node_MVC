@@ -7,6 +7,11 @@ const port = 3000;
 
 const route = require('./routes/index.js')
 
+const db = require('./config/db/index.js');
+
+// Connect to Mongo database
+db.connect();
+
 // midleware
 app.use(express.urlencoded({
   extended: true
