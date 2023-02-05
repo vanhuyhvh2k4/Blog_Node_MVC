@@ -8,9 +8,7 @@ class SiteController {
             .then(courses => res.render('home', {
                 courses: courses,
             }))
-            .catch(next);
-        
-        // res.render('home');
+            .catch(next);   
     }
 
     // [GET] /search
