@@ -2,6 +2,7 @@ const path = require('path');
 const morgan = require('morgan');
 const exphbs  = require('express-handlebars');
 const express = require('express');
+const methodOverride = require('method-override');
 const app = express();
 const port = 3000;
 
@@ -11,6 +12,8 @@ const db = require('./config/db/index.js');
 
 // Connect to Mongo database
 db.connect();
+
+app.use(methodOverride('_method'));
 
 // midleware
 app.use(express.urlencoded({

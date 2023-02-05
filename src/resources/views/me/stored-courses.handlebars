@@ -1,0 +1,31 @@
+<div class="mt-4">
+    <h3>My courses</h3>
+    <table class="table mt-4">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Course Name</th>
+                <th scope="col">Course Description</th>
+                <th scope="col">Created Time</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each courses}}
+            <tr>
+                <th scope="row">{{@index}}</th>
+                <td>{{this.name}}</td>
+                <td>{{this.description}}</td>
+                <td>{{this.createdAt}}</td>
+                <td>
+                    <a class="btn btn-link" href="/courses/{{this._id}}/edit">Edit</a>
+                </td>
+                <td>
+                    <a class="btn btn-link" href="">Delete</a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
