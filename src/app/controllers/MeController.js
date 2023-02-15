@@ -4,10 +4,10 @@ class MeController {
     
     // [GET] /me/stored/courses
     storedCourses (req, res, next) {
-        Course.find({}).lean()
-            .then(courses => res.render('me/stored-courses', {
-                courses: courses,
-            }))
+        Promise.all([Course.find({}).lean(), Course.countDocumentsDeleted()])
+            .then(([courses, deletedCount]) => 
+                res.render('me/stored-courses', {courses: courses, deletedCount: deletedCount})
+            )
             .catch(next)
     }
 
