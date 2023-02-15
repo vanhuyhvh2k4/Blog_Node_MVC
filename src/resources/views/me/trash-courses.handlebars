@@ -1,9 +1,24 @@
-<div class="mt-4">
+<form method="post" name="containerForm" class="mt-4" action="/courses/handle-form-action">
   <h3>Deleted Courses</h3>
   <a href="/me/stored/courses">Courses List</a>
+  <div class="mt-4 d-flex align-items-center">
+    <div class="form-check mr-2">
+      <input class="form-check-input" type="checkbox" value="" id="checkbox-all">
+      <label class="form-check-label" for="checkbox-all">
+        Select All
+      </label>
+    </div>
+    <select id="inputState" class="form-control select-all-option" name="action">
+        <option value="" selected>Choose...</option>
+        <option value="restore">Restore</option>
+        <option value="permanentlyDelete">Permanently Deleted</option>
+    </select>
+    <div class="btn btn-primary btn-execute-option disabled">Execute</div>
+  </div>
   <table class="table mt-4">
     <thead>
       <tr>
+        <th scope="col"></th>
         <th scope="col">#</th>
         <th scope="col">Course Name</th>
         <th scope="col">Course Description</th>
@@ -15,6 +30,11 @@
     <tbody>
       {{#each courses}}
         <tr>
+          <td>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="courseIds[]" value="{{this._id}}">
+            </div>
+          </td>
           <th scope="row">{{@index}}</th>
           <td>{{this.name}}</td>
           <td>{{this.description}}</td>
@@ -36,7 +56,7 @@
       {{/each}}
     </tbody>
   </table>
-</div>
+</form>
 
 {{! dialog }}
 <div id="delete-course-modal" class="modal" tabindex="-1" role="dialog">
@@ -76,6 +96,9 @@
     var restoreCourseForm = document.forms['restore-course-form'];
     var courseId;
     var restoreBtn = $('.btn-restore');
+    var checkboxAll = $('#checkbox-all');
+    var courseItemCheckbox = $('input[name="courseIds[]"]');
+    var btnExecuteOption = $('.btn-execute-option');
 
     $('#delete-course-modal').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget) // Button that triggered the modal
@@ -95,7 +118,38 @@
 
       restoreCourseForm.action = '/courses/' + courseId + '/restore?_method=PATCH';
       restoreCourseForm.submit();
-      console.log(courseId);
     })
+
+    checkboxAll.change(function () {
+      var isCheckedAll = $(this).prop('checked');
+        courseItemCheckbox.prop('checked', isCheckedAll);
+        excuteBtnCheckAllSubmit();
+    })
+
+    courseItemCheckbox.change(function () {
+      var isCheckedAll = courseItemCheckbox.length === $('input[name="courseIds[]"]:checked').length;
+      checkboxAll.prop('checked', isCheckedAll);
+      excuteBtnCheckAllSubmit();
+    })
+
+    function excuteBtnCheckAllSubmit () {
+      var checkedCount = $('input[name="courseIds[]"]:checked').length;
+
+      if (checkedCount > 0) {
+        btnExecuteOption.removeClass('disabled');
+      }
+      else {
+        btnExecuteOption.addClass('disabled');
+      }
+    }
+
+    btnExecuteOption.click(function (e) {
+      var isSubmit = !$(this).hasClass('disabled');
+      e.preventDefault();
+      if (isSubmit) {
+        containerForm.submit();
+      }
+    })
+    console.log(checkboxAll);
   });
 </script>
