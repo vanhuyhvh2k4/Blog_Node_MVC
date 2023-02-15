@@ -1,9 +1,23 @@
-<div class="mt-4">
+<form method="post" name="container-form" class="mt-4" action="/courses/handle-form-action">
   <h3>My courses</h3>
   <a href="/me/trash/courses">Recycle Bin ({{deletedCount}})</a>
+  <div class="mt-4 d-flex align-items-center">
+    <div class="form-check mr-2">
+      <input class="form-check-input" type="checkbox" value="" id="checkbox-all">
+      <label class="form-check-label" for="checkbox-all">
+        Choose All
+      </label>
+    </div>
+    <select class="form-control select-all-option" name="action" require>
+      <option value="" selected>Choose...</option>
+      <option value="delete">Delete</option>
+    </select>
+    <div class="btn btn-primary btn-execute-option disabled">Execute</div>
+  </div>
   <table class="table mt-4">
     <thead>
       <tr>
+        <th scope="col"></th>
         <th scope="col">#</th>
         <th scope="col">Course Name</th>
         <th scope="col">Course Description</th>
@@ -15,6 +29,11 @@
     <tbody>
       {{#each courses}}
         <tr>
+          <td>
+            <div class="form-check mr-2">
+              <input class="form-check-input" type="checkbox" name="courseIds[]" value="{{this._id}}">
+            </div>
+          </td>
           <th scope="row">{{@index}}</th>
           <td>{{this.name}}</td>
           <td>{{this.description}}</td>
@@ -42,7 +61,7 @@
       {{/each}}
     </tbody>
   </table>
-</div>
+</form>
 
 {{! dialog }}
 <div id="delete-course-modal" class="modal" tabindex="-1" role="dialog">
@@ -78,6 +97,10 @@
     var btnDeleteCourse = document.querySelector('#btn-delete-course');
     var deleteCourseForm = document.forms['delete-course-form'];
     var courseId;
+    var checkboxAll = $('#checkbox-all');
+    var courseItemCheckbox = $('input[name="courseIds[]"]');
+    var btnExecuteOption = $('.btn-execute-option');
+    var containerForm = document.forms['container-form'];
 
     $('#delete-course-modal').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget) // Button that triggered the modal
@@ -85,9 +108,41 @@
       console.log(courseId);
     });
 
+    btnExecuteOption.click(function (e) {
+      var isSubmit = !$(this).hasClass('disabled');
+      e.preventDefault();
+      if (isSubmit) {
+        containerForm.submit();
+      }
+    })
+
     btnDeleteCourse.onclick = function () {
       deleteCourseForm.action = '/courses/' + courseId + '?_method=DELETE';
       deleteCourseForm.submit();
     }
+
+    checkboxAll.change(function () {
+      var isCheckedAll = $(this).prop('checked');
+        courseItemCheckbox.prop('checked', isCheckedAll);
+        excuteBtnCheckAllSubmit();
+    })
+    
+    courseItemCheckbox.change(function () {
+      var isCheckedAll = courseItemCheckbox.length === $('input[name="courseIds[]"]:checked').length;
+      checkboxAll.prop('checked', isCheckedAll);
+      excuteBtnCheckAllSubmit();
+    })
+
+    function excuteBtnCheckAllSubmit () {
+      var checkedCount = $('input[name="courseIds[]"]:checked').length;
+
+      if (checkedCount > 0) {
+        btnExecuteOption.removeClass('disabled');
+      }
+      else {
+        btnExecuteOption.addClass('disabled');
+      }
+    }
+
   });
 </script>
