@@ -8,11 +8,11 @@
         Choose All
       </label>
     </div>
-    <select class="form-control select-all-option" name="action" require>
+    <select class="form-control select-all-option" name="action" require="required">
       <option value="" selected>Choose...</option>
       <option value="delete">Delete</option>
     </select>
-    <div class="btn btn-primary btn-execute-option disabled">Execute</div>
+    <button class="btn btn-primary btn-execute-option" disabled="disabled">Execute</button>
   </div>
   <table class="table mt-4">
     <thead>
@@ -108,14 +108,6 @@
       console.log(courseId);
     });
 
-    btnExecuteOption.click(function (e) {
-      var isSubmit = !$(this).hasClass('disabled');
-      e.preventDefault();
-      if (isSubmit) {
-        containerForm.submit();
-      }
-    })
-
     btnDeleteCourse.onclick = function () {
       deleteCourseForm.action = '/courses/' + courseId + '?_method=DELETE';
       deleteCourseForm.submit();
@@ -137,10 +129,10 @@
       var checkedCount = $('input[name="courseIds[]"]:checked').length;
 
       if (checkedCount > 0) {
-        btnExecuteOption.removeClass('disabled');
+        btnExecuteOption.attr('disabled', false);
       }
       else {
-        btnExecuteOption.addClass('disabled');
+        btnExecuteOption.attr('disabled', true);
       }
     }
 
