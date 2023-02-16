@@ -8,7 +8,7 @@
         Choose All
       </label>
     </div>
-    <select class="form-control select-all-option" name="action" require="required">
+    <select class="form-control select-all-option" name="action" required="required">
       <option value="" selected>Choose...</option>
       <option value="delete">Delete</option>
     </select>
@@ -19,9 +19,18 @@
       <tr>
         <th scope="col"></th>
         <th scope="col">#</th>
-        <th scope="col">Course Name</th>
-        <th scope="col">Course Description</th>
-        <th scope="col">Created Time</th>
+        <th scope="col">
+          Course Name
+          {{{sortable 'name' _sort}}}
+        </th>
+        <th scope="col">
+          Course Description
+          {{{sortable 'description' _sort}}}
+        </th>
+        <th scope="col">
+          Created Time
+          {{{sortable 'createdAt' _sort}}}
+        </th>
         <th scope="col"></th>
         <th scope="col"></th>
       </tr>
@@ -34,7 +43,7 @@
               <input class="form-check-input" type="checkbox" name="courseIds[]" value="{{this._id}}">
             </div>
           </td>
-          <th scope="row">{{@index}}</th>
+          <th scope="row">{{sum @index 1}}</th>
           <td>{{this.name}}</td>
           <td>{{this.description}}</td>
           <td>{{this.createdAt}}</td>
@@ -105,7 +114,6 @@
     $('#delete-course-modal').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget) // Button that triggered the modal
       courseId = button.data('id') // Extract info from data-* attributes
-      console.log(courseId);
     });
 
     btnDeleteCourse.onclick = function () {

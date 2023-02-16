@@ -35,7 +35,7 @@
               <input class="form-check-input" type="checkbox" name="courseIds[]" value="{{this._id}}">
             </div>
           </td>
-          <th scope="row">{{@index}}</th>
+          <th scope="row">{{sum @index 1}}</th>
           <td>{{this.name}}</td>
           <td>{{this.description}}</td>
           <td>{{this.deletedAt}}</td>
@@ -108,7 +108,6 @@
     btnDeleteCourse.onclick = function () {
       deleteCourseForm.action = '/courses/' + courseId + '/force?_method=DELETE';
       deleteCourseForm.submit();
-      console.log(courseId);
     }
 
     restoreBtn.click(function (e) {
